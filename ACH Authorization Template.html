@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" style=""><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACH Authorization Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+      /* Override Pico CSS for Document Style */
+      :root {
+        --font-family: 'Times New Roman', Times, serif;
+        --line-height: 1.3;
+        --font-size: 11pt;
+        --spacing: 0.5rem;
+        --color: #000;
+        --background-color: #fff;
+      }
+
+      body {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 10px 25px;
+        font-family: var(--font-family);
+        color: #000;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        color: #000;
+        margin-bottom: 0.5rem;
+        font-family: Arial, Helvetica, sans-serif; /* Headers often sans-serif in forms */
+      }
+
+      h1 {
+        font-size: 14pt;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 2px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 3px;
+      }
+
+      .subtitle {
+        text-align: center;
+        font-size: 7pt;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        margin-bottom: 3px;
+        color: #333;
+      }
+
+      .purpose {
+        text-align: center;
+        font-style: italic;
+        font-size: 8pt;
+        margin-bottom: 8px;
+        color: #555;
+      }
+
+      .section-header {
+        background-color: #e0e6ed;
+        padding: 2px 6px;
+        font-size: 8.5pt;
+        font-weight: bold;
+        border: 1px solid #999;
+        margin-top: 5px;
+        margin-bottom: 3px;
+        text-transform: uppercase;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 5px;
+      }
+
+      .col {
+        flex: 1;
+      }
+
+      .field-group {
+        margin-bottom: 1px;
+      }
+
+      .label {
+        display: block;
+        font-weight: bold;
+        font-size: 8pt;
+        margin-bottom: 1px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .input-line {
+        border: none;
+        border-bottom: 1px solid #000;
+        background-color: #fcfcfc;
+        height: 14px;
+        width: 100%;
+        display: block;
+        outline: none;
+        padding: 1px 1px;
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+      }
+
+      .input-box {
+        border: 1px solid #999;
+        height: 14px;
+        width: 100%;
+        background-color: #fff;
+        display: block;
+        outline: none;
+        padding: 1px 1px;
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+      }
+
+      /* Print styles */
+      @media print {
+        body {
+          border: none;
+          box-shadow: none;
+          padding: 20px 40px;
+        }
+        input[type="text"],
+        input[type="checkbox"],
+        input[type="radio"] {
+          border-color: #000 !important;
+        }
+      }
+
+      /* Add print button */
+      .print-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #0066cc;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 14pt;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        font-family: Arial, sans-serif;
+        z-index: 1000;
+      }
+
+      .print-button:hover {
+        background-color: #0052a3;
+      }
+
+      @media print {
+        .print-button {
+          display: none;
+        }
+      }
+
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 2px;
+      }
+
+      .checkbox-box {
+        width: 12px;
+        height: 12px;
+        border: 1px solid #000;
+        display: inline-block;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .radio-wrapper {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-right: 20px;
+      }
+
+      .radio-circle {
+        width: 12px;
+        height: 12px;
+        cursor: pointer;
+      }
+
+      .terms-box {
+        border: 1px solid #999;
+        padding: 1px;
+        font-size: 3pt;
+        text-align: justify;
+        background-color: #f9f9f9;
+        margin-bottom: 2px;
+        line-height: 0.9;
+      }
+
+      .office-use {
+        border: 1px dashed #999;
+        padding: 6px;
+        background-color: #f5f5f5;
+        margin-top: 8px;
+      }
+
+      .office-header {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 3px;
+        text-transform: uppercase;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 8pt;
+      }
+
+      footer {
+        margin-top: 8px;
+        border-top: 1px solid #ccc;
+        padding-top: 5px;
+        font-size: 7pt;
+        color: #666;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .req {
+        color: red;
+      }
+
+      .small-note {
+        font-size: 7pt;
+        color: #666;
+        font-style: italic;
+        margin-top: 1px;
+      }
+
+      /* Disable Pico Styles that interfere */
+      input,
+      select,
+      textarea {
+        margin-bottom: 0 !important;
+      }
+    </style>
+  </head>
+  <body style="">
+    <button class="print-button" onclick="window.print()">🖨️ Print Form</button>
+    <div style="text-align: center; font-size: 8pt; color: #666; margin-bottom: 5px; font-style: italic;">
+      Form provided by <strong style="color: #333;">AM Business Consultants, LLC</strong>
+    </div>
+    <h1>ACH Authorization Form</h1>
+    <div class="subtitle">Automated Clearing House Payment Authorization</div>
+    <div class="purpose">
+      This form authorizes the entity named below to initiate electronic entries to your account via the Automated
+      Clearing House (ACH) system.
+    </div>
+
+    <!-- Section 1 -->
+    <div class="section-header">1. Account Holder Information</div>
+
+    <div class="row">
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Full Legal Name <span class="req">*</span></span>
+          <input type="text" class="input-line" required="">
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Business/Company Name (if applicable)</span>
+          <input type="text" class="input-line">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Social Security Number / Tax ID</span>
+          <input type="text" class="input-line">
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Phone Number <span class="req">*</span></span>
+          <input type="tel" class="input-line" required="">
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Email Address <span class="req">*</span></span>
+          <input type="email" class="input-line" required="">
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 2px; margin-bottom: 2px; font-weight: bold; font-family: Arial, sans-serif; font-size: 8pt;">
+      Mailing Address <span class="req">*</span>
+    </div>
+    <div class="row">
+      <div class="col" style="flex: 2">
+        <div class="field-group">
+          <span class="label">Street Address</span>
+          <input type="text" class="input-line">
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <span class="label">City</span>
+          <input type="text" class="input-line">
+        </div>
+      </div>
+      <div class="col" style="flex: 0.5">
+        <div class="field-group">
+          <span class="label">State</span>
+          <input type="text" class="input-line" maxlength="2">
+        </div>
+      </div>
+      <div class="col" style="flex: 0.8">
+        <div class="field-group">
+          <span class="label">ZIP Code</span>
+          <input type="text" class="input-line" maxlength="10">
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section-header">2. Financial Institution Information</div>
+
+    <div class="row">
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Financial Institution Name <span class="req">*</span></span>
+          <input type="text" class="input-line" required="">
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Bank Address (City, State)</span>
+          <input type="text" class="input-line">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Routing Number (9 Digits) <span class="req">*</span></span>
+          <input type="text" class="input-box" maxlength="9" placeholder="123456789" style="letter-spacing: 3px; font-family: 'Courier New', monospace; font-size: 11pt;" required="">
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Account Number <span class="req">*</span></span>
+          <input type="text" class="input-box" required="">
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <span class="label">Account Type <span class="req">*</span></span>
+          <div style="padding-top: 5px">
+            <div class="radio-wrapper">
+              <input type="radio" name="accountType" value="checking" class="radio-circle" required="">
+              <span>Checking</span>
+            </div>
+            <div class="radio-wrapper">
+              <input type="radio" name="accountType" value="savings" class="radio-circle" required="">
+              <span>Savings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="small-note" style="margin-top: 2px; text-align: center; border: 1px dotted #999; padding: 2px">
+      <strong>NOTE:</strong> Please attach a voided check or official bank letter for account verification purposes.
+    </div>
+
+    <!-- Section 3 & 4 Combined for layout -->
+    <div class="row" style="gap: 20px; margin-top: 0">
+      <div class="col">
+        <div class="section-header" style="margin-top: 8px">3. Authorization Type</div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" class="checkbox-box" id="oneTime">
+          <span style="font-size: 8pt;">One-Time Payment</span>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" class="checkbox-box" id="recurring">
+          <span style="font-size: 8pt;">Recurring Payments</span>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" class="checkbox-box" id="directDeposit">
+          <span style="font-size: 8pt;">Direct Deposit (Credits)</span>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" class="checkbox-box" id="achDebits">
+          <span style="font-size: 8pt;">ACH Debits (Payments)</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="section-header" style="margin-top: 8px">4. Payment Details (If Applicable)</div>
+        <div class="row" style="gap: 10px;">
+          <div class="col">
+            <div class="field-group">
+              <span class="label">Amount ($)</span>
+              <input type="text" class="input-line" placeholder="0.00">
+            </div>
+          </div>
+          <div class="col">
+            <div class="field-group">
+              <span class="label">Frequency</span>
+              <input type="text" class="input-line">
+            </div>
+          </div>
+          <div class="col">
+            <div class="field-group">
+              <span class="label">Start Date</span>
+              <input type="date" class="input-line">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="section-header">5. Terms and Authorization Agreement</div>
+    <div class="terms-box">
+      <p style="margin: 0 0 1px 0">
+        <strong>Authorization:</strong> I hereby authorize the Company to initiate entries to my checking/savings account at the financial institution listed above, and initiate adjustments for any transactions credited/debited in error. This authority remains in effect until the Company is notified in writing to cancel it.
+      </p>
+      <p style="margin: 0 0 1px 0">
+        <strong>NACHA Compliance:</strong> I acknowledge that ACH transactions must comply with U.S. law and NACHA rules.
+      </p>
+      <p style="margin: 0 0 1px 0">
+        <strong>Revocation:</strong> This authorization remains in effect until I notify the Company in writing at least thirty (30) days prior to cancellation.
+      </p>
+      <p style="margin: 0 0 1px 0">
+        <strong>Error Correction:</strong> In the event of an error, I authorize the Company to debit or credit my account to correct it. The Company reserves the right to refuse or terminate services.
+      </p>
+      <p style="margin: 0">
+        <strong>Privacy:</strong> All information will be kept secure and used solely for processing authorized transactions.
+      </p>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="section-header">6. Acknowledgment and Signature</div>
+
+    <div class="checkbox-wrapper" style="margin-bottom: 5px">
+      <input type="checkbox" class="checkbox-box" id="agreeTerms" required="">
+      <span style="font-weight: bold; font-size: 8pt;">I have read and agree to the terms and conditions outlined above. <span class="req">*</span></span>
+    </div>
+
+    <div class="row" style="margin-top: 8px">
+      <div class="col">
+        <div class="field-group">
+          <input type="text" class="input-line" style="background: transparent;">
+          <span class="label" style="font-weight: normal; margin-top: 2px; font-size: 7pt;">Authorized Signature</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <input type="text" class="input-line" style="background: transparent;">
+          <span class="label" style="font-weight: normal; margin-top: 2px; font-size: 7pt;">Printed Name</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <input type="text" class="input-line" style="background: transparent;">
+          <span class="label" style="font-weight: normal; margin-top: 2px; font-size: 7pt;">Title/Position (If Business)</span>
+        </div>
+      </div>
+      <div class="col" style="flex: 0.6;">
+        <div class="field-group">
+          <input type="date" class="input-line" style="background: transparent;">
+          <span class="label" style="font-weight: normal; margin-top: 2px; font-size: 7pt;">Date</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div>Form ACH-001 | Rev. 2024.1</div>
+      <div>Confidential - Contains Personal Financial Information</div>
+      <div>Page 1 of 1</div>
+    </footer>
+  
+
+</body></html>
