@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petty Cash Reconciliation Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 11pt;
+            background: #f5f5f5;
+            padding: 15px;
+        }
+        
+        .form-container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #333;
+            padding: 0;
+        }
+        
+        .form-header {
+            background: #1e3c72;
+            color: white;
+            padding: 10px 15px 12px 15px;
+            text-align: center;
+            border-bottom: 2px solid #333;
+        }
+        
+        .company-reference {
+            font-size: 8pt;
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        
+        .form-header h1 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        
+        .form-body {
+            padding: 12px 15px;
+        }
+        
+        .section {
+            margin-bottom: 12px;
+            border: 1px solid #999;
+        }
+        
+        .section-header {
+            background: #e8e8e8;
+            padding: 4px 10px;
+            border-bottom: 1px solid #999;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .section-header h2 {
+            font-size: 10pt;
+            color: #333;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .section-number {
+            background: #1e3c72;
+            color: white;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9pt;
+            font-weight: bold;
+        }
+        
+        .section-content {
+            padding: 8px 10px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        
+        .form-row.two-col {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-size: 9pt;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 4px 6px;
+            border: 1px solid #999;
+            font-size: 10pt;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+        
+        .form-group input[readonly] {
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        /* Request Type Selection - Checkbox Style */
+        .request-type-container {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .request-type-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .request-type-option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #1e3c72;
+        }
+        
+        .request-type-option label {
+            font-size: 10pt;
+            cursor: pointer;
+        }
+        
+        .increase-section {
+            display: none;
+            background: #fffbea;
+            padding: 8px;
+            margin-top: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .increase-section.active {
+            display: block;
+        }
+        
+        /* Cash Count - Side by Side */
+        .cash-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .cash-column h4 {
+            font-size: 9pt;
+            font-weight: bold;
+            margin-bottom: 4px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #999;
+        }
+        
+        .cash-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+        }
+        
+        .cash-table th {
+            background: #f0f0f0;
+            padding: 3px 5px;
+            text-align: left;
+            font-size: 8pt;
+            border-bottom: 1px solid #999;
+        }
+        
+        .cash-table td {
+            padding: 2px 5px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .cash-table input {
+            width: 45px;
+            padding: 2px 4px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 9pt;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        .cash-table .amount {
+            font-weight: bold;
+            text-align: right;
+            min-width: 55px;
+        }
+        
+        .cash-table .denomination {
+            font-size: 9pt;
+        }
+        
+        .subtotal-row {
+            background: #e8f4e8 !important;
+        }
+        
+        .subtotal-row td {
+            font-weight: bold;
+            border-top: 1px solid #999;
+        }
+        
+        .total-cash-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 2px solid #1e3c72;
+        }
+        
+        .total-cash-row span {
+            font-weight: bold;
+            font-size: 10pt;
+        }
+        
+        .total-cash-row .total-value {
+            background: #1e3c72;
+            color: white;
+            padding: 3px 10px;
+            font-size: 10pt;
+        }
+        
+        /* Expenditure Table - Compact */
+        .expense-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+            margin-bottom: 6px;
+        }
+        
+        .expense-table th {
+            background: #f0f0f0;
+            padding: 3px 4px;
+            text-align: left;
+            font-size: 8pt;
+            border: 1px solid #999;
+        }
+        
+        .expense-table td {
+            padding: 2px 3px;
+            border: 1px solid #ddd;
+        }
+        
+        .expense-table input,
+        .expense-table select {
+            width: 100%;
+            padding: 2px 4px;
+            border: 1px solid #ccc;
+            font-size: 9pt;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        .expense-table .amount-input {
+            text-align: right;
+        }
+        
+        .expense-total-row {
+            background: #fffbea;
+        }
+        
+        .expense-total-row td {
+            font-weight: bold;
+            border-top: 2px solid #999;
+        }
+        
+        .add-row-btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 3px 10px;
+            font-size: 9pt;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        .add-row-btn:hover {
+            background: #2a5298;
+        }
+        
+        .remove-row-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 2px 6px;
+            font-size: 8pt;
+            cursor: pointer;
+        }
+        
+        /* Reconciliation Summary - Compact */
+        .reconciliation-box {
+            border: 1px solid #999;
+            font-size: 9pt;
+        }
+        
+        .recon-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .recon-table td {
+            padding: 3px 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .recon-table .label-col {
+            width: 70%;
+        }
+        
+        .recon-table .value-col {
+            width: 30%;
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        .recon-table .total-row {
+            background: #e8e8e8;
+            border-top: 1px solid #999;
+        }
+        
+        .recon-table .variance-row {
+            background: #fff3cd;
+        }
+        
+        .recon-table .variance-row.balanced {
+            background: #d4edda;
+        }
+        
+        .recon-table .variance-row.imbalanced {
+            background: #f8d7da;
+        }
+        
+        .recon-table .replenish-row {
+            background: #1e3c72;
+            color: white;
+        }
+        
+        .recon-table .replenish-row td {
+            padding: 4px 8px;
+            font-weight: bold;
+        }
+        
+        .variance-explanation {
+            margin-top: 6px;
+        }
+        
+        .variance-explanation label {
+            font-size: 8pt;
+            font-weight: bold;
+        }
+        
+        .variance-explanation input {
+            width: 100%;
+            padding: 3px 5px;
+            border: 1px solid #999;
+            font-size: 9pt;
+            font-family: 'Times New Roman', Times, serif;
+            margin-top: 2px;
+        }
+        
+        /* Signatures - Side by Side with Name Input */
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .signature-box {
+            text-align: center;
+        }
+        
+        .signature-name-input {
+            width: 100%;
+            padding: 4px 6px;
+            border: none;
+            border-bottom: 1px solid #333;
+            font-size: 10pt;
+            font-family: 'Times New Roman', Times, serif;
+            text-align: center;
+            margin-bottom: 2px;
+        }
+        
+        .signature-name-input:focus {
+            outline: none;
+            border-bottom: 2px solid #1e3c72;
+        }
+        
+        .signature-line-area {
+            border-bottom: 1px solid #333;
+            height: 25px;
+            margin-bottom: 2px;
+            position: relative;
+        }
+        
+        .signature-line-area::after {
+            content: "(sign here)";
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 7pt;
+            color: #999;
+            font-style: italic;
+        }
+        
+        .signature-label {
+            font-size: 8pt;
+            color: #333;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+        
+        .signature-date {
+            margin-top: 4px;
+        }
+        
+        .signature-date input {
+            padding: 2px 5px;
+            border: 1px solid #999;
+            font-size: 9pt;
+            font-family: 'Times New Roman', Times, serif;
+            width: 120px;
+        }
+        
+        /* Action Buttons */
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #999;
+        }
+        
+        .btn {
+            padding: 6px 15px;
+            border: 1px solid #333;
+            font-size: 9pt;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        .btn-primary {
+            background: #1e3c72;
+            color: white;
+            border-color: #1e3c72;
+        }
+        
+        .btn-primary:hover {
+            background: #2a5298;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border-color: #6c757d;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                font-size: 10pt;
+            }
+            
+            .form-container {
+                box-shadow: none;
+                border: 1px solid #000;
+            }
+            
+            .form-actions {
+                display: none;
+            }
+            
+            .add-row-btn,
+            .remove-row-btn {
+                display: none;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            .signature-line-area::after {
+                content: "";
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .cash-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .signature-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <div class="company-reference">Property of AM Business Consultants, LLC</div>
+            <h1>PETTY CASH RECONCILIATION FORM</h1>
+        </div>
+        
+        <form class="form-body" id="pettyCashForm">
+            <!-- Section 1: General Information -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-number">1</span>
+                    <h2>General Information</h2>
+                </div>
+                <div class="section-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Company/Department</label>
+                            <input type="text" id="companyName" placeholder="Enter name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Custodian Name</label>
+                            <input type="text" id="custodianName" placeholder="Enter name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Reconciliation Date</label>
+                            <input type="date" id="reconDate" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Period Covered</label>
+                            <input type="text" id="periodCovered" placeholder="e.g., Jan 2026">
+                        </div>
+                        <div class="form-group">
+                            <label>Approved Petty Cash ($)</label>
+                            <input type="number" id="approvedAmount" step="0.01" placeholder="0.00" required onchange="calculateAll()">
+                        </div>
+                        <div class="form-group">
+                            <label>Custodian Title</label>
+                            <input type="text" id="custodianTitle" placeholder="Enter title">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 2: Request Type -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-number">2</span>
+                    <h2>Request Type</h2>
+                </div>
+                <div class="section-content">
+                    <div class="request-type-container">
+                        <div class="request-type-option">
+                            <input type="checkbox" id="replenish" name="requestTypeReplenish" checked onchange="toggleRequestType()">
+                            <label for="replenish">Replenish Expenditures</label>
+                        </div>
+                        <div class="request-type-option">
+                            <input type="checkbox" id="establish" name="requestTypeEstablish" onchange="toggleRequestType()">
+                            <label for="establish">Establish / Increase Petty Cash</label>
+                        </div>
+                    </div>
+                    
+                    <div class="increase-section" id="increaseSection">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Current Amount ($)</label>
+                                <input type="number" id="currentAmount" step="0.01" placeholder="0.00" onchange="calculateIncrease()">
+                            </div>
+                            <div class="form-group">
+                                <label>Requested New Amount ($)</label>
+                                <input type="number" id="newAmount" step="0.01" placeholder="0.00" onchange="calculateIncrease()">
+                            </div>
+                            <div class="form-group">
+                                <label>Increase Amount ($)</label>
+                                <input type="number" id="increaseAmount" step="0.01" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Justification</label>
+                            <input type="text" id="justification" placeholder="Reason for increase">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 3: Cash on Hand -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-number">3</span>
+                    <h2>Cash on Hand Count</h2>
+                </div>
+                <div class="section-content">
+                    <div class="cash-grid">
+                        <!-- Bills Column -->
+                        <div class="cash-column">
+                            <h4>Bills</h4>
+                            <table class="cash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Denom.</th>
+                                        <th>Qty</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="denomination">$100</td>
+                                        <td><input type="number" id="bills100" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amt100">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$50</td>
+                                        <td><input type="number" id="bills50" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amt50">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$20</td>
+                                        <td><input type="number" id="bills20" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amt20">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$10</td>
+                                        <td><input type="number" id="bills10" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amt10">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$5</td>
+                                        <td><input type="number" id="bills5" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amt5">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$1</td>
+                                        <td><input type="number" id="bills1" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amt1">$0.00</td>
+                                    </tr>
+                                    <tr class="subtotal-row">
+                                        <td colspan="2"><strong>Subtotal</strong></td>
+                                        <td class="amount" id="billsSubtotal">$0.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Coins Column -->
+                        <div class="cash-column">
+                            <h4>Coins</h4>
+                            <table class="cash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Denom.</th>
+                                        <th>Qty</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="denomination">$1.00</td>
+                                        <td><input type="number" id="coins100" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amtCoin100">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$0.50</td>
+                                        <td><input type="number" id="coins50" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amtCoin50">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$0.25</td>
+                                        <td><input type="number" id="coins25" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amtCoin25">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$0.10</td>
+                                        <td><input type="number" id="coins10" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amtCoin10">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$0.05</td>
+                                        <td><input type="number" id="coins5" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amtCoin5">$0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="denomination">$0.01</td>
+                                        <td><input type="number" id="coins1" value="0" min="0" onchange="calculateCash()"></td>
+                                        <td class="amount" id="amtCoin1">$0.00</td>
+                                    </tr>
+                                    <tr class="subtotal-row">
+                                        <td colspan="2"><strong>Subtotal</strong></td>
+                                        <td class="amount" id="coinsSubtotal">$0.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="total-cash-row">
+                        <span>TOTAL CASH ON HAND:</span>
+                        <span class="total-value" id="totalCash">$0.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 4: Expenditures/Vouchers -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-number">4</span>
+                    <h2>Expenditures / Vouchers</h2>
+                </div>
+                <div class="section-content">
+                    <table class="expense-table" id="expenseTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">Date</th>
+                                <th style="width: 60px;">Voucher #</th>
+                                <th>Description / Vendor</th>
+                                <th style="width: 120px;">Category</th>
+                                <th style="width: 70px;">Amount</th>
+                                <th style="width: 35px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenseBody">
+                            <tr>
+                                <td><input type="date" name="expDate"></td>
+                                <td><input type="text" name="voucherNum" placeholder="#"></td>
+                                <td><input type="text" name="description" placeholder="Description"></td>
+                                <td>
+                                    <select name="category">
+                                        <option value="">Select</option>
+                                        <option value="Office Supplies">Office Supplies</option>
+                                        <option value="Postage">Postage</option>
+                                        <option value="Travel">Travel</option>
+                                        <option value="Meal">Meal</option>
+                                        <option value="Repairs (Tools)">Repairs (Tools)</option>
+                                        <option value="Gas">Gas</option>
+                                        <option value="Software">Software</option>
+                                        <option value="Subscription">Subscription</option>
+                                        <option value="Telephone">Telephone</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" name="amount" step="0.01" placeholder="0.00" class="amount-input" onchange="calculateExpenses()"></td>
+                                <td><button type="button" class="remove-row-btn" onclick="removeExpenseRow(this)" style="visibility: hidden;">✕</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="date" name="expDate"></td>
+                                <td><input type="text" name="voucherNum" placeholder="#"></td>
+                                <td><input type="text" name="description" placeholder="Description"></td>
+                                <td>
+                                    <select name="category">
+                                        <option value="">Select</option>
+                                        <option value="Office Supplies">Office Supplies</option>
+                                        <option value="Postage">Postage</option>
+                                        <option value="Travel">Travel</option>
+                                        <option value="Meal">Meal</option>
+                                        <option value="Repairs (Tools)">Repairs (Tools)</option>
+                                        <option value="Gas">Gas</option>
+                                        <option value="Software">Software</option>
+                                        <option value="Subscription">Subscription</option>
+                                        <option value="Telephone">Telephone</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" name="amount" step="0.01" placeholder="0.00" class="amount-input" onchange="calculateExpenses()"></td>
+                                <td><button type="button" class="remove-row-btn" onclick="removeExpenseRow(this)" style="visibility: hidden;">✕</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="date" name="expDate"></td>
+                                <td><input type="text" name="voucherNum" placeholder="#"></td>
+                                <td><input type="text" name="description" placeholder="Description"></td>
+                                <td>
+                                    <select name="category">
+                                        <option value="">Select</option>
+                                        <option value="Office Supplies">Office Supplies</option>
+                                        <option value="Postage">Postage</option>
+                                        <option value="Travel">Travel</option>
+                                        <option value="Meal">Meal</option>
+                                        <option value="Repairs (Tools)">Repairs (Tools)</option>
+                                        <option value="Gas">Gas</option>
+                                        <option value="Software">Software</option>
+                                        <option value="Subscription">Subscription</option>
+                                        <option value="Telephone">Telephone</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" name="amount" step="0.01" placeholder="0.00" class="amount-input" onchange="calculateExpenses()"></td>
+                                <td><button type="button" class="remove-row-btn" onclick="removeExpenseRow(this)" style="visibility: hidden;">✕</button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="expense-total-row">
+                                <td colspan="4" style="text-align: right; padding-right: 10px;"><strong>TOTAL EXPENDITURES:</strong></td>
+                                <td class="amount" id="totalExpenses" style="text-align: right; padding-right: 5px;">$0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <button type="button" class="add-row-btn" onclick="addExpenseRow()">+ Add Row</button>
+                </div>
+            </div>
+            
+            <!-- Section 5: Reconciliation Summary -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-number">5</span>
+                    <h2>Reconciliation Summary</h2>
+                </div>
+                <div class="section-content">
+                    <div class="reconciliation-box">
+                        <table class="recon-table">
+                            <tr>
+                                <td class="label-col">Cash on Hand</td>
+                                <td class="value-col" id="sumCash">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Total Expenditures (Vouchers)</td>
+                                <td class="value-col" id="sumExpenses">$0.00</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td class="label-col"><strong>= Total Accounted For</strong></td>
+                                <td class="value-col" id="totalAccounted">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Approved Petty Cash Amount</td>
+                                <td class="value-col" id="sumApproved">$0.00</td>
+                            </tr>
+                            <tr class="variance-row" id="varianceRow">
+                                <td class="label-col">Variance (Over/Short)</td>
+                                <td class="value-col" id="variance">$0.00</td>
+                            </tr>
+                            <tr class="replenish-row">
+                                <td class="label-col">Amount to Replenish</td>
+                                <td class="value-col" id="replenishAmount">$0.00</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="variance-explanation">
+                        <label>Variance Explanation (if any):</label>
+                        <input type="text" id="varianceExplanation" placeholder="Explain any variance">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 6: Approvals -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-number">6</span>
+                    <h2>Signatures & Approvals</h2>
+                </div>
+                <div class="section-content">
+                    <div class="signature-grid">
+                        <div class="signature-box">
+                            <input type="text" class="signature-name-input" id="preparerName" placeholder="Print Name">
+                            <div class="signature-line-area"></div>
+                            <div class="signature-label">Prepared By (Custodian)</div>
+                            <div class="signature-date">
+                                <label style="font-size: 8pt;">Date: </label>
+                                <input type="date" id="prepDate">
+                            </div>
+                        </div>
+                        <div class="signature-box">
+                            <input type="text" class="signature-name-input" id="approverName" placeholder="Print Name">
+                            <div class="signature-line-area"></div>
+                            <div class="signature-label">Approved By (Finance/Manager)</div>
+                            <div class="signature-date">
+                                <label style="font-size: 8pt;">Date: </label>
+                                <input type="date" id="approveDate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+                <button type="button" class="btn btn-primary" onclick="window.print()">Print</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // Set default date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('reconDate').value = today;
+            document.getElementById('prepDate').value = today;
+        });
+        
+        function toggleRequestType() {
+            const isEstablish = document.getElementById('establish').checked;
+            const increaseSection = document.getElementById('increaseSection');
+            increaseSection.classList.toggle('active', isEstablish);
+        }
+        
+        function calculateIncrease() {
+            const current = parseFloat(document.getElementById('currentAmount').value) || 0;
+            const newAmt = parseFloat(document.getElementById('newAmount').value) || 0;
+            document.getElementById('increaseAmount').value = (newAmt - current).toFixed(2);
+        }
+        
+        function calculateCash() {
+            const bills100 = (parseInt(document.getElementById('bills100').value) || 0) * 100;
+            const bills50 = (parseInt(document.getElementById('bills50').value) || 0) * 50;
+            const bills20 = (parseInt(document.getElementById('bills20').value) || 0) * 20;
+            const bills10 = (parseInt(document.getElementById('bills10').value) || 0) * 10;
+            const bills5 = (parseInt(document.getElementById('bills5').value) || 0) * 5;
+            const bills1 = (parseInt(document.getElementById('bills1').value) || 0) * 1;
+            
+            document.getElementById('amt100').textContent = formatCurrency(bills100);
+            document.getElementById('amt50').textContent = formatCurrency(bills50);
+            document.getElementById('amt20').textContent = formatCurrency(bills20);
+            document.getElementById('amt10').textContent = formatCurrency(bills10);
+            document.getElementById('amt5').textContent = formatCurrency(bills5);
+            document.getElementById('amt1').textContent = formatCurrency(bills1);
+            
+            const billsSubtotal = bills100 + bills50 + bills20 + bills10 + bills5 + bills1;
+            document.getElementById('billsSubtotal').textContent = formatCurrency(billsSubtotal);
+            
+            const coins100 = (parseInt(document.getElementById('coins100').value) || 0) * 1;
+            const coins50 = (parseInt(document.getElementById('coins50').value) || 0) * 0.50;
+            const coins25 = (parseInt(document.getElementById('coins25').value) || 0) * 0.25;
+            const coins10 = (parseInt(document.getElementById('coins10').value) || 0) * 0.10;
+            const coins5 = (parseInt(document.getElementById('coins5').value) || 0) * 0.05;
+            const coins1 = (parseInt(document.getElementById('coins1').value) || 0) * 0.01;
+            
+            document.getElementById('amtCoin100').textContent = formatCurrency(coins100);
+            document.getElementById('amtCoin50').textContent = formatCurrency(coins50);
+            document.getElementById('amtCoin25').textContent = formatCurrency(coins25);
+            document.getElementById('amtCoin10').textContent = formatCurrency(coins10);
+            document.getElementById('amtCoin5').textContent = formatCurrency(coins5);
+            document.getElementById('amtCoin1').textContent = formatCurrency(coins1);
+            
+            const coinsSubtotal = coins100 + coins50 + coins25 + coins10 + coins5 + coins1;
+            document.getElementById('coinsSubtotal').textContent = formatCurrency(coinsSubtotal);
+            
+            const totalCash = billsSubtotal + coinsSubtotal;
+            document.getElementById('totalCash').textContent = formatCurrency(totalCash);
+            
+            calculateAll();
+        }
+        
+        function calculateExpenses() {
+            const amountInputs = document.querySelectorAll('#expenseBody input[name="amount"]');
+            let total = 0;
+            amountInputs.forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+            document.getElementById('totalExpenses').textContent = formatCurrency(total);
+            calculateAll();
+        }
+        
+        function calculateAll() {
+            const cash = parseCurrency(document.getElementById('totalCash').textContent);
+            const expenses = parseCurrency(document.getElementById('totalExpenses').textContent);
+            const approved = parseFloat(document.getElementById('approvedAmount').value) || 0;
+            
+            const totalAccounted = cash + expenses;
+            const variance = totalAccounted - approved;
+            
+            document.getElementById('sumCash').textContent = formatCurrency(cash);
+            document.getElementById('sumExpenses').textContent = formatCurrency(expenses);
+            document.getElementById('totalAccounted').textContent = formatCurrency(totalAccounted);
+            document.getElementById('sumApproved').textContent = formatCurrency(approved);
+            document.getElementById('replenishAmount').textContent = formatCurrency(expenses);
+            
+            const varianceRow = document.getElementById('varianceRow');
+            varianceRow.classList.remove('balanced', 'imbalanced');
+            
+            if (Math.abs(variance) < 0.01) {
+                varianceRow.classList.add('balanced');
+                document.getElementById('variance').textContent = '$0.00 ✓';
+            } else {
+                varianceRow.classList.add('imbalanced');
+                const sign = variance > 0 ? 'Over' : 'Short';
+                document.getElementById('variance').textContent = `${formatCurrency(Math.abs(variance))} (${sign})`;
+            }
+        }
+        
+        function addExpenseRow() {
+            const tbody = document.getElementById('expenseBody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="date" name="expDate"></td>
+                <td><input type="text" name="voucherNum" placeholder="#"></td>
+                <td><input type="text" name="description" placeholder="Description"></td>
+                <td>
+                    <select name="category">
+                        <option value="">Select</option>
+                        <option value="Office Supplies">Office Supplies</option>
+                        <option value="Postage">Postage</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Meal">Meal</option>
+                        <option value="Repairs (Tools)">Repairs (Tools)</option>
+                        <option value="Gas">Gas</option>
+                        <option value="Software">Software</option>
+                        <option value="Subscription">Subscription</option>
+                        <option value="Telephone">Telephone</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </td>
+                <td><input type="number" name="amount" step="0.01" placeholder="0.00" class="amount-input" onchange="calculateExpenses()"></td>
+                <td><button type="button" class="remove-row-btn" onclick="removeExpenseRow(this)">✕</button></td>
+            `;
+            tbody.appendChild(newRow);
+        }
+        
+        function removeExpenseRow(btn) {
+            const tbody = document.getElementById('expenseBody');
+            // Keep minimum 3 rows
+            if (tbody.children.length > 3) {
+                btn.closest('tr').remove();
+                calculateExpenses();
+            }
+        }
+        
+        function formatCurrency(value) {
+            return '$' + value.toFixed(2);
+        }
+        
+        function parseCurrency(str) {
+            return parseFloat(str.replace(/[$,]/g, '')) || 0;
+        }
+        
+        function resetForm() {
+            if (confirm('Reset entire form?')) {
+                document.getElementById('pettyCashForm').reset();
+                document.querySelectorAll('.amount').forEach(el => el.textContent = '$0.00');
+                document.getElementById('totalCash').textContent = '$0.00';
+                
+                // Reset to exactly 3 rows
+                const tbody = document.getElementById('expenseBody');
+                while (tbody.children.length > 3) tbody.lastChild.remove();
+                
+                document.getElementById('varianceRow').classList.remove('balanced', 'imbalanced');
+                document.getElementById('increaseSection').classList.remove('active');
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('reconDate').value = today;
+                document.getElementById('prepDate').value = today;
+                
+                // Reset checkboxes
+                document.getElementById('replenish').checked = true;
+                document.getElementById('establish').checked = false;
+            }
+        }
+    </script>
+</body>
+</html>
